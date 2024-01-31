@@ -11,7 +11,8 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        app:cardBackgroundColor="@color/Red"
+        app:cardBackgroundColor="@color/red"
+
         app:cardCornerRadius="10dp">
 
         <RelativeLayout
@@ -32,6 +33,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                app:tint="@color/white"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 tools:srcCompat="@tools:sample/avatars" />

@@ -2,11 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="purple">#A585DD</color>
-    <color name="pink">#C56887</color>
-    <color name="yellow">#FFC107</color>
-    <color name="skyBlue">#75B4E6</color>
-    <color name="Orange">#C66343</color>
-    <color name="Green">#5FB8B0</color>
-    <color name="Red">#C15353</color>
+    <color name="purple">#6026C7</color>
+    <color name="pink">#C5124D</color>
+    <color name="yellow">#E1AD11</color>
+    <color name="skyBlue">#2286D6</color>
+    <color name="orange">#DD4615</color>
+    <color name="green">#103935</color>
+    <color name="red">#CA2020</color>
 </resources>
