@@ -4,6 +4,8 @@ package com.example.quotesapp;
 import static android.content.Context.CLIPBOARD_SERVICE;
 
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -11,6 +13,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +30,10 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.DataViewHolder> {
 
@@ -72,11 +79,21 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.DataViewHo
             }
         });
 
+        holder.saveLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.cardLayout.setDrawingCacheEnabled(true);
+
+                Bitmap bitmap = Bitmap.createBitmap(holder.cardLayout.getDrawingCache());
+                storeImage(bitmap);
+            }
+        });
+
         holder.shareLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bitmap b = BitmapFactory.decodeResource(context.getResources(),R.id.copyLayout);
-                Log.d("bitmap", "onClick: "+b.toString());
+                holder.cardLayout.setDrawingCacheEnabled(true);
+                Bitmap b = Bitmap.createBitmap(holder.cardLayout.getDrawingCache());
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("image/jpeg");
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -126,6 +143,25 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.DataViewHo
             likeImageView = itemView.findViewById(R.id.likeImage);
             likeTextView = itemView.findViewById(R.id.likeText);
             cardLayout = itemView.findViewById(R.id.quoteLayout);
+        }
+    }
+
+    private void storeImage(Bitmap image) {
+        File pictureFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/quotes");
+        if (!pictureFile.exists()) {
+            if (!pictureFile.mkdirs()) {
+                Log.d("TAG", "Error creating media file, check storage permissions: ");// e.getMessage());
+                return;
+            }
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(new File(pictureFile.getPath() + File.separator + "photo.png"));
+            image.compress(Bitmap.CompressFormat.PNG, 90, fos);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            Log.d(TAG, "File not found: " + e.getMessage());
+        } catch (IOException e) {
+            Log.d(TAG, "Error accessing file: " + e.getMessage());
         }
     }
 }
